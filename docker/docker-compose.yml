@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+  bookstore:
+    image: isosa/bookstore-backend:development-new-architecture
+    depends_on:
+      - db
+    ports:
+      - 44444:44444
+    environment:
+      DATABASE_NAME: bookstore_db
+      DATABASE_HOSTNAME: db
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: password
+    volumes:
+      - ./logs:/opt/bookstore/logs
+  db:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: bookstore_db
