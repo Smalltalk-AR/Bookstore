@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sed -ri "s/Bookstore-Backend:master/Bookstore-Backend:$SOURCE_BRANCH/" load-project.st
