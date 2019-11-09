@@ -32,10 +32,10 @@ BaselineOfBookstore >> setUpDependencies: spec [
 BaselineOfBookstore >> setUpGroups: spec [
 
 	spec
-		package: 'BookStore-Model' with: [ spec requires: #('Buoy') ];
-		package: 'BookStore-Tests'
-			with: [ spec requires: #('BookStore-Model' 'BuoyTestExtensions') ].
+		package: 'Bookstore-Model' with: [ spec requires: #('Buoy') ];
+		package: 'Bookstore-Tests'
+			with: [ spec requires: #('Bookstore-Model' 'BuoyTestExtensions') ].
 	spec
-		group: 'Deployment' with: #('BookStore-Model');
-		group: 'Development' with: #('BookStore-Tests')
+		group: 'Deployment' with: #('Bookstore-Model');
+		group: 'Development' with: #('Bookstore-Tests')
 ]
