@@ -6,7 +6,7 @@ Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playgro
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:model/source'
+	repository: 'github://Smalltalk-AR/Bookstore-Backend:model/source';
 	load
 ```
 ![Alt Text](load-model.png)
@@ -17,8 +17,8 @@ Tambien ver un baseline *
 ## Cargar Teapot 
 ```smalltalk
 Metacello new
-	baseline: 'Teapot'
-	repository: 'github://zeroflag/Teapot:2.6.0/source'
+	baseline: 'Teapot';
+	repository: 'github://zeroflag/Teapot:2.6.0/source';
 	load
 ```
 
@@ -31,7 +31,7 @@ GET /people
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source'
+	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source';
 	load
 ```
 
@@ -44,7 +44,7 @@ Mostrar como queda el baseline y las otras rutas.
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source'
+	repository: 'github://Smalltalk-AR/Bookstore-Backend:persistence/source';
 	load
 ```
 
