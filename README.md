@@ -6,9 +6,9 @@
 ## Resumen
 
 Repo del backend utilizado para el taller "Creando aplicaciones web con Smalltalk" dictado en 
-- [Smallatalks 2017](https://smalltalks2017.fast.org.ar)
-- [Smallatalks 2018](https://smalltalks2018.fast.org.ar)
-- [Smallatalks 2019](https://smalltalks2019.fast.org.ar)
+- [Smalltalks 2017](https://smalltalks2017.fast.org.ar)
+- [Smalltalks 2018](https://smalltalks2018.fast.org.ar)
+- [Smalltalks 2019](https://smalltalks2019.fast.org.ar)
 
 
 ## Uso
