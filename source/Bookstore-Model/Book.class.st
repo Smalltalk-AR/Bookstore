@@ -13,7 +13,19 @@ Class {
 { #category : #'instance creation' }
 Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionYear [
 
-	^ self new intializeTitled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionYear	
+	AssertionChecker
+		refuse: [ aTitle isEmpty ]
+			because: 'Title must be a non-empty string'
+			raising: InstanceCreationFailed;
+		refuse: [ anEditorial isEmpty ]
+			because: 'Editorial must be a non-empty string'
+			raising: InstanceCreationFailed.
+
+	^ self new
+		intializeTitled: aTitle
+		by: aBookAuthor
+		editedBy: anEditorial
+		on: aEditionYear
 ]
 
 { #category : #accessing }

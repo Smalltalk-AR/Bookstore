@@ -39,9 +39,9 @@ BookAuthorTest >> testFailedCreation [
 
 	self
 		should: [ BookAuthor named: '' lastName: 'García Márquez' bornIn: 'Colombia' ]
-			raise: InstanceCreationFailed
-			withMessageText: 'Nil property in Person';
+			raise: InstanceCreationFailed 
+			withMessageText: 'First name must be a non-empty string';
 		should: [ BookAuthor named: 'Gabriel' lastName: '' bornIn: 'Colombia' ]
-			raise: Error
-			withMessageText: 'Nil property in Person'
+			raise: InstanceCreationFailed
+			withMessageText: 'Last name must be a non-empty string'
 ]

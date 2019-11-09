@@ -39,5 +39,5 @@ BookTest >> testFailedCreation [
 				on: 2001
 			]
 		raise: InstanceCreationFailed
-		withMessageText: 'You must provide a title'
+		withMessageText: 'Title must be a non-empty string'
 ]

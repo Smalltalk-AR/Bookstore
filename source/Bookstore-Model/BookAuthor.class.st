@@ -10,9 +10,17 @@ Class {
 }
 
 { #category : #'instance creation' }
-BookAuthor class >> named: aFistName lastName: aLastName bornIn: aCountry [
+BookAuthor class >> named: aFirstName lastName: aLastName bornIn: aCountry [
 
-	^ self new initializeNamed: aFistName lastName: aLastName bornIn: aCountry
+	AssertionChecker
+		refuse: [ aFirstName isEmpty ]
+			because: 'First name must be a non-empty string'
+			raising: InstanceCreationFailed;
+		refuse: [ aLastName isEmpty ]
+			because: 'Last name must be a non-empty string'
+			raising: InstanceCreationFailed.
+
+	^ self new initializeNamed: aFirstName lastName: aLastName bornIn: aCountry
 ]
 
 { #category : #comparing }
