@@ -31,6 +31,15 @@ Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionY
 ]
 
 { #category : #accessing }
+Book >> = anObject [
+
+	^ anObject class = self class
+		and: [ author = anObject author
+				and: [ editionYear = anObject editionYear
+						and: [ index = anObject index and: [ title = anObject title ] ] ] ]
+]
+
+{ #category : #accessing }
 Book >> author [
 
 	^ author
@@ -46,6 +55,13 @@ Book >> editionYear [
 Book >> editorial [
 
 	^ editorial
+]
+
+{ #category : #accessing }
+Book >> hash [
+
+	^ author hash
+		bitXor: (editionYear hash bitXor: (index hash bitXor: title hash))
 ]
 
 { #category : #accessing }
