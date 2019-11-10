@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'firstName',
 		'lastName',
-		'nationality'
+		'country'
 	],
 	#category : #'Bookstore-Model-Bookstore-Model'
 }
@@ -27,14 +27,14 @@ BookAuthor class >> named: aFirstName lastName: aLastName bornIn: aCountry [
 BookAuthor >> = anObject [
 	^ anObject class = self class
 		and: [ firstName = anObject firstName
-				and:
-					[ lastName = anObject lastName and: [ nationality = anObject country ] ] ]
+				and: [ lastName = anObject lastName and: [ country = anObject country ] ]
+			]
 ]
 
-{ #category : #country }
+{ #category : #accessing }
 BookAuthor >> country [
 
-	^ nationality 
+	^ country 
 ]
 
 { #category : #accessing }
@@ -45,7 +45,9 @@ BookAuthor >> firstName [
 
 { #category : #comparing }
 BookAuthor >> hash [
-	^ firstName hash bitXor: (lastName hash bitXor: nationality hash)
+
+	^ firstName hash bitXor: ( lastName hash bitXor: country hash)
+
 ]
 
 { #category : #initialization }
@@ -53,7 +55,7 @@ BookAuthor >> initializeNamed: aFistName lastName: aLastName bornIn: aCountry [
 
 	firstName := aFistName.
 	lastName := aLastName.
-	nationality := aCountry
+	country := aCountry
 ]
 
 { #category : #accessing }

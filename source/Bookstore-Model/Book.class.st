@@ -5,15 +5,16 @@ Class {
 		'title',
 		'author',
 		'editorial',
-		'releaseYear',
-		'index'
+		'index',
+		'editionYear'
 	],
 	#category : #'Bookstore-Model'
 }
 
 { #category : #'instance creation' }
 Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionYear index: anIndex [
-	AssertionChecker
+
+  AssertionChecker
 		refuse: [ aTitle isEmpty ]
 			because: 'Title must be a non-empty string'
 			raising: InstanceCreationFailed;
@@ -30,9 +31,10 @@ Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionY
 
 { #category : #accessing }
 Book >> = anObject [
+
 	^ anObject class = self class
 		and: [ author = anObject author
-				and: [ releaseYear = anObject editionYear
+				and: [ editionYear = anObject editionYear
 						and: [ index = anObject index and: [ title = anObject title ] ] ] ]
 ]
 
@@ -42,10 +44,10 @@ Book >> author [
 	^ author
 ]
 
-{ #category : #publicationYear }
+{ #category : #accessing }
 Book >> editionYear [
 	
-	^ releaseYear 
+  ^ editionYear 
 ]
 
 { #category : #accessing }
@@ -56,13 +58,15 @@ Book >> editorial [
 
 { #category : #accessing }
 Book >> hash [
+
 	^ author hash
-		bitXor: (releaseYear hash bitXor: (index hash bitXor: title hash))
+		bitXor: (editionYear hash bitXor: (index hash bitXor: title hash))
 ]
 
-{ #category : #'instance creation' }
+{ #category : #accessing }
 Book >> index [
-	^ index
+	
+	^ index 
 ]
 
 { #category : #'instance creation' }
@@ -70,7 +74,7 @@ Book >> intializeTitled: aTitle by: anAuthor editedBy: anEditorial on: aYear ind
 	title := aTitle.
 	author := anAuthor.
 	editorial := anEditorial.
-	releaseYear := aYear.
+	editionYear := aYear.
 	index := anIndex
 ]
 

@@ -19,6 +19,7 @@ BookTest >> testAccessing [
 		editedBy: 'Penguin Random House'
 		on: 2001
 		index: 18.
+
 	self
 		assert: book title equals: 'Cien años de soledad';
 		assert: book author equals: self gabrielGarciaMarquez;
