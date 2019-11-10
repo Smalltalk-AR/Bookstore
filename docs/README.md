@@ -63,8 +63,28 @@ $ psql -U postgres
 $ CREATE DATABASE bookstore;
 ```
 
-Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión
+Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión desde la imagen
+```smalltalk
+| login accessor session repository |
 
+DatabaseAccessor classForThisPlatform DefaultDriver: P3DatabaseDriver.
+	
+login := Login new
+		database: PostgreSQLPlatform new;
+		username: 'postgres';
+		password: 'secret';
+		host: 'localhost';
+		port: 5432;
+		databaseName: 'test';
+		yourself.
+
+accessor := DatabaseAccessor forLogin: login.
+
+session := GlorpSession new
+		accessor: accessor;
+		system: ConfigurableDescriptorSystem new;
+		yourself.
+```
 
 Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
 
