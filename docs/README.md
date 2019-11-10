@@ -1,8 +1,10 @@
-# Guía paso a paso para crear una aplicación web con Smalltalk
+¡Bienvenido! Esta guía te servirá para aprender cada tema realizado pequeñas exploraciones.
 
-La guía consiste en ir haciendo pequeñas exploraciones a medida que vamos viendo los distintos temas. 
+# El problema
 
-## Cargar el modelo
+# El ambiente
+
+# Sacando del horno modelo listo
 
 Lo primero que vamos a hacer es  Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playground el siguiente código
 
