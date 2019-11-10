@@ -1,0 +1,28 @@
+version: '3.1'
+services:
+  bookstore:
+    build: ../
+    # depends_on:
+    #   - db
+    ports:
+      - "1701:8080"
+    ulimits:
+      rtprio:
+        soft: 2
+        hard: 2
+    volumes:
+      - ./logs:/opt/bookstore/logs
+  # db:
+  #   image: mysql:5.7
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_DATABASE: bookstore_db
+  front:
+    image: nginx:1.16
+    depends_on:
+      - bookstore
+    ports:
+      - "80:80"
+    volumes:
+      - ./www/:/www/
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf

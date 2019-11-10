@@ -3,6 +3,7 @@
 docker-compose.yml
 Dockerfile
 docs
+front
 LICENSE
 loading
 README.md
