@@ -25,11 +25,10 @@ BookAuthor class >> named: aFirstName lastName: aLastName bornIn: aCountry [
 
 { #category : #comparing }
 BookAuthor >> = anObject [
-
-	^ ( anObject isKindOf: self class )
+	^ anObject class = self class
 		and: [ firstName = anObject firstName
-				and: [ lastName = anObject lastName and: [ nationality = anObject country ] ]
-			]
+				and:
+					[ lastName = anObject lastName and: [ nationality = anObject country ] ] ]
 ]
 
 { #category : #country }
@@ -46,8 +45,7 @@ BookAuthor >> firstName [
 
 { #category : #comparing }
 BookAuthor >> hash [
-
-	^ firstName hash bitXor: ( lastName hash bitXor: nationality )
+	^ firstName hash bitXor: (lastName hash bitXor: nationality hash)
 ]
 
 { #category : #initialization }

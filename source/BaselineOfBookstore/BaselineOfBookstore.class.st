@@ -17,7 +17,6 @@ BaselineOfBookstore >> baseline: spec [
 
 { #category : #baselines }
 BaselineOfBookstore >> setUpDependencies: spec [
-
 	spec
 		baseline: 'Buoy'
 			with: [ spec
@@ -25,17 +24,21 @@ BaselineOfBookstore >> setUpDependencies: spec [
 				loads: #('Deployment') ];
 		project: 'BuoyTestExtensions'
 			copyFrom: 'Buoy'
-			with: [ spec loads: 'Dependent-SUnit-Extensions' ]
+			with: [ spec loads: 'Dependent-SUnit-Extensions' ];
+		baseline: 'Teapot'
+			with: [ spec repository: 'github://zeroflag/Teapot:v2.6.0/source' ]
 ]
 
 { #category : #baselines }
 BaselineOfBookstore >> setUpGroups: spec [
-
 	spec
 		package: 'Bookstore-Model' with: [ spec requires: #('Buoy') ];
+		package: 'Bookstore-Server'
+			with: [ spec requires: #('Bookstore-Model' 'Teapot') ];
 		package: 'Bookstore-Tests'
-			with: [ spec requires: #('Bookstore-Model' 'BuoyTestExtensions') ].
+			with: [ spec
+				requires: #('Bookstore-Model' 'Bookstore-Server' 'BuoyTestExtensions') ].
 	spec
-		group: 'Deployment' with: #('Bookstore-Model');
+		group: 'Deployment' with: #('Bookstore-Model' 'Bookstore-Server');
 		group: 'Development' with: #('Bookstore-Tests')
 ]
