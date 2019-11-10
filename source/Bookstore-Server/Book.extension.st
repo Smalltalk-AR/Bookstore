@@ -20,5 +20,5 @@ Book class >> neoJsonMapping: mapper [
 	mapper
 		for: self
 		do:
-			[ :mapping | mapping mapInstVars: #(title author editorial releaseYear index) ]
+			[ :mapping | mapping mapInstVars: #(title author editorial editionYear index) ]
 ]
