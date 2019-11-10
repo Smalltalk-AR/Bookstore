@@ -108,7 +108,7 @@ Bookstore >> getAllBooks [
 Bookstore >> initialize [
 	server := Teapot
 		configure:
-			{(#port -> 9090).
+			{(#port -> 8080).
 			(#defaultOutput -> #json).
 			(#debugMode -> true)}.
 	self configureEndpointsFor: server.
