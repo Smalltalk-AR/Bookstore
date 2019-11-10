@@ -12,5 +12,5 @@ BookAuthor class >> fromJson: aNeoJSon [
 BookAuthor class >> neoJsonMapping: mapper [
 	mapper
 		for: self
-		do: [ :mapping | mapping mapInstVars: #(firstName lastName nationality) ]
+		do: [ :mapping | mapping mapInstVars: #(firstName lastName country) ]
 ]
