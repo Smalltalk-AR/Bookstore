@@ -5,13 +5,14 @@ Class {
 		'title',
 		'author',
 		'editorial',
-		'relaseYear'
+		'index',
+		'editionYear'
 	],
 	#category : #'Bookstore-Model'
 }
 
 { #category : #'instance creation' }
-Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionYear [
+Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionYear index: anIndex [
 
 	AssertionChecker
 		refuse: [ aTitle isEmpty ]
@@ -26,6 +27,7 @@ Book class >> titled: aTitle by: aBookAuthor editedBy: anEditorial on: aEditionY
 		by: aBookAuthor
 		editedBy: anEditorial
 		on: aEditionYear
+		index: anIndex
 ]
 
 { #category : #accessing }
@@ -34,10 +36,10 @@ Book >> author [
 	^ author
 ]
 
-{ #category : #publicationYear }
+{ #category : #accessing }
 Book >> editionYear [
 	
-	^ relaseYear 
+	^ editionYear 
 ]
 
 { #category : #accessing }
@@ -46,13 +48,20 @@ Book >> editorial [
 	^ editorial
 ]
 
-{ #category : #'instance creation' }
-Book >> intializeTitled: aTitle by: anAuthor editedBy: anEditorial on: aYear [
+{ #category : #accessing }
+Book >> index [
+	
+	^ index 
+]
+
+{ #category : #initialization }
+Book >> intializeTitled: aTitle by: anAuthor editedBy: anEditorial on: aYear index: anIndex [
 
 	title := aTitle.
 	author := anAuthor.
 	editorial := anEditorial.
-	relaseYear := aYear
+	editionYear := aYear.
+	index := anIndex
 ]
 
 { #category : #accessing }
