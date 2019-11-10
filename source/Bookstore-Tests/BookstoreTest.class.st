@@ -54,8 +54,8 @@ BookstoreTest >> testAddAuthorToBookstore [
 	self assert: bookstore authors isEmpty.
 	bookstore addAuthor: author.
 	self
-		assertCollection: bookstore authors
-		includesAll: (Array with: author)
+		withTheOnlyOneIn: bookstore authors
+		do: [ :auth | auth = author ]
 ]
 
 { #category : #running }
@@ -91,9 +91,7 @@ BookstoreTest >> testAddBookToBookstore [
 		index: 1.
 	self assert: bookstore books isEmpty.
 	bookstore addBook: book.
-	self
-		assertCollection: bookstore books
-		includesAll: (Array with: book)
+	self withTheOnlyOneIn: bookstore books do: [ :bk | bk = book ]
 ]
 
 { #category : #running }
