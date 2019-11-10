@@ -6,12 +6,13 @@ Book class >> authorFrom: aNeoJSon [
 ]
 
 { #category : #'*Bookstore-Server' }
-Book class >> fromJson: aNeoJSon [
+Book class >> fromJson: aNeoJSON [
 	^ self
-		titled: (aNeoJSon at: #title)
-		by: (self authorFrom: (aNeoJSon at: #author))
-		editedBy: (aNeoJSon at: #editorial)
-		on: (aNeoJSon at: #releaseYear)
+		titled: (aNeoJSON at: #title)
+		by: (self authorFrom: (aNeoJSON at: #author))
+		editedBy: (aNeoJSON at: #editorial)
+		on: (aNeoJSON at: #releaseYear)
+		index: (aNeoJSON at: #index)
 ]
 
 { #category : #'*Bookstore-Server' }
@@ -19,5 +20,5 @@ Book class >> neoJsonMapping: mapper [
 	mapper
 		for: self
 		do:
-			[ :mapping | mapping mapInstVars: #(title author editorial releaseYear) ]
+			[ :mapping | mapping mapInstVars: #(title author editorial releaseYear index) ]
 ]
