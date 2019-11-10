@@ -2,11 +2,14 @@
 
 # El problema
 
-# El ambiente
+La biblioteca finalmente va a difitalizar su catálogo. Se requiere un sistema para administrar el catálogo que permita agregar, editar y borrar libros.
+De los libros se conoce su identificador único, título, autor, año de edición y editorial.
+Del autor su nombre, apellido y país de nacimiento.
+
 
 # Sacando del horno modelo listo
 
-Lo primero que vamos a hacer es  Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playground el siguiente código
+Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playground el siguiente código
 
 ```smalltalk
 Metacello new
@@ -14,15 +17,16 @@ Metacello new
 	repository: 'github://Smalltalk-AR/Bookstore-Backend:model/source';
 	load
 ```
+
 ![Alt Text](load-model.png)
 
-* aca la idea es explorar un poco el ambiente y el lenguaje. Tambien ver un baseline *
+*Nota:* aca la idea es explorar un poco el ambiente y la solución. Tambien ver un baseline.*
 
-## Crear una API RESTful
+# Creando una API RESTful
 
-Vamos a explorar 
+Vamos a explorar en un playground (o un test) un poco el micro framework [Teapo](https://github.com/zeroflag/Teapot) con el que vamos a hacer la API.
 
-### Cargar Teapot 
+Para agregar Teapot a la imagen, ejecutar en cualquier lado 
 
 ```smalltalk
 Metacello new
@@ -31,41 +35,26 @@ Metacello new
 	load
 ```
 
-Aca la idea es agregar hacer algun ejercio listando los libros o las personas.
-Se podría hacer dentro de un test.
-
+Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. 
 GET /authors
 
-### Cargar el modelo + api
 
-```smalltalk
-Metacello new
-	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source';
-	load
-```
 
-Mostrar como queda el baseline y las otras rutas.
+*Nota:* Aca la idea es agregar hacer algun ejercio listando los libros o las personas.
 
-*estria bien levantar aca la app si es estatica y pegarle al modelo*
+# Agregándole persistencia
 
-### Persistencia
+Es hora de agregar persistencia al ejercicio. 
 
-Es hora de agregar persistencia al ejercicio. Antes vamos a explorar algunos conceptos en un Playground.
 
-```smalltalk
-Metacello new
-	baseline: 'Sagan';
-	repository: 'github://ba-st/Sagan:release-candidate/source';
-	load
-```
+## Instalando postgres
 
 ```bash
 $ docker pull postgres:11
 $ docker run -d --name db-tests -p 5432:5432 -e POSTGRES_PASSWORD=secret postgres:11
 ```
 
-Esto nos va permitir levantar la base
+Vamos a crear la base
 
 ```bash 
 $ docker exec -it db-tests bash
@@ -76,79 +65,26 @@ $ CREATE DATABASE bookstore;
 
 Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión
 
-```smalltak
 
-
+Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
 
 ```smalltalk
-| login accessor session repository |
-
-DatabaseAccessor classForThisPlatform DefaultDriver: P3DatabaseDriver.
-	
-login := Login new
-		database: PostgreSQLPlatform new;
-		username: 'postgres';
-		password: 'secret';
-		host: 'localhost';
-		port: 5432;
-		databaseName: 'test';
-		yourself.
-
-accessor := DatabaseAccessor forLogin: login.
-
-session := GlorpSession new
-		accessor: accessor;
-		system: ConfigurableDescriptorSystem new;
-		yourself.
-
-repository := RDBMSRepository
-		storingObjectsOfType: BookAuthor
-		checkingConflictsAccordingTo: DoNotCheckForConflictsStrategy new
-		workingWith: [:action | action value: session ].
-
-repository configureMappingsIn: [ :rdbmsRepository |
-			rdbmsRepository
-				beAwareOfTableDefinedBy:
-					( RealTableDefinition
-						named: 'AUTHORS'
-						fieldsDefinedBy:
-							{SequentialNumberFieldDefinition new.
-							( CharacterFieldDefinition named: 'first_name' sized: 100 ).
-							( CharacterFieldDefinition named: 'last_name' sized: 100 )} );
-				beAwareOfClassModelDefinedBy:
-					( ClassModelDefinition
-						for: BookAuthor 
-						attributesDefinedBy:
-							{"( BasicAttributeDefinition named: RDBMSConstants sequentialNumberAttribute )."
-							( BasicAttributeDefinition named: #firstName ).
-							( BasicAttributeDefinition named: #lastName )} );
-				beAwareOfDescriptorDefinedBy:
-					( ConcreteDescriptorDefinition
-						for: BookAuthor
-						onTableNamed: 'AUTHORS'
-						mappingsDefinedBy:
-							{"( SequentialNumberMappingDefinition onTableNamed: 'AUTHORS' )."
-							( DirectMappingDefinition
-								fromAttributeNamed: #firstName
-								toFieldNamed: 'first_name'
-								onTableNamed: 'AUTHORS' ).
-							( DirectMappingDefinition
-								fromAttributeNamed: #lastName
-								toFieldNamed: 'last_name'
-								onTableNamed: 'AUTHORS' )} )
-			].
-		
-session
-		loginIfError: [ :error | self fail: error messageText ];
-		recreateTablesIfError: [ :error | self fail: error messageText ];
-		logout.
-
-session loginIfError: [ :error | self fail: error messageText ].
-
-session inspect.
-repository inspect
-
+Metacello new
+	baseline: 'Bookstore';
+	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source';
+	load
 ```
+Ahora si, agreguemos a la imagen [Sagan](http)
+
+```smalltalk
+Metacello new
+	baseline: 'Sagan';
+	repository: 'github://ba-st/Sagan:release-candidate/source';
+	load
+```
+
+Ya tenemos la base de datos y tenemos Sagan en la imagen, hagamos una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
+
 
 
 ### Cargar el modelo + persistencia
