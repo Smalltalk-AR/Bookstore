@@ -56,7 +56,7 @@ Ejecutando el siguiente script, podemos ver como se crea un server con una sola 
 			'/authors'
 				-> [ :request | 
 					TeaResponse ok
-						body: authors;
+						body: (authors collect: [:author | { #name -> author firstName } asDictionary ]);
 						headers: {('Access-Control-Allow-Origin' -> '*')} ];
 		start.
 	authors
