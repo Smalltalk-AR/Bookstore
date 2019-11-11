@@ -101,7 +101,7 @@ $ docker exec -it db-tests bash
 $ psql -U postgres
 # CREATE DATABASE bookstore;
 # \c bookstore
-```\
+```
 
 Ahora si, ya teemos la base configurada, agreguemos a la imagen [Sagan](https://github.com/ba-st/Sagan)
 
