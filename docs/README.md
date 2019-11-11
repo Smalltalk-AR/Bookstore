@@ -14,7 +14,7 @@ Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playgro
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:model/source';
+	repository: 'github://Smalltalk-AR/Bookstore:model/source';
 	load
 ```
 
@@ -24,23 +24,62 @@ Metacello new
 
 # Creando una API RESTful
 
-Vamos a explorar en un playground (o un test) un poco el micro framework [Teapo](https://github.com/zeroflag/Teapot) con el que vamos a hacer la API.
+Vamos a explorar en un playground (o un test) un poco el micro framework [Teapot](https://github.com/zeroflag/Teapot) con el que vamos a hacer la API.
 
 Para agregar Teapot a la imagen, ejecutar en cualquier lado 
 
 ```smalltalk
 Metacello new
 	baseline: 'Teapot';
-	repository: 'github://zeroflag/Teapot:2.6.0/source';
+	repository: 'github://zeroflag/Teapot:v2.6.0/source';
 	load
 ```
 
-Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. 
-GET /authors
+Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. Un `GET /authors`.
 
+Ejecutando el siguiente script, podemos ver como se crea un server con una sola ruta /authors que nos devuelve una lista con los autores previamente definidos.
 
+```smalltalk
+| authors server author1 author2 |
+	authors := OrderedCollection new.
+	author1 := BookAuthor
+		named: 'Seymour'
+		lastName: 'Skinner'
+		bornIn: 'Springfield'.
+	author2 := BookAuthor
+		named: 'Armando'
+		lastName: 'Barreda'
+		bornIn: 'Springfield'.
+	server := (Teapot configure: {(#defaultOutput -> #json)})
+		GET:
+			'/authors'
+				-> [ :request | 
+					TeaResponse ok
+						body: (authors collect: [:author | { #name -> author firstName } asDictionary ]);
+						headers: {('Access-Control-Allow-Origin' -> '*')} ];
+		start.
+	authors
+		add: author1;
+		add: author2.
+	authors
+```
 
-*Nota:* Aca la idea es agregar hacer algun ejercio listando los libros o las personas.
+¿Se te ocurren más pruebas? ¿Cómo crearías un nuevo recurso?
+
+# ¿Y la aplicación web?
+
+Carguemos el back end...
+```smalltalk
+Metacello new
+	baseline: 'Bookstore';
+	repository: 'github://Smalltalk-AR/Bookstore:api/source';
+	load
+```
+
+Y ahora vamos a levantar la app desde la imagen
+
+ZnServer
+
 
 # Agregándole persistencia
 
@@ -60,10 +99,21 @@ Vamos a crear la base
 $ docker exec -it db-tests bash
 
 $ psql -U postgres
-$ CREATE DATABASE bookstore;
+# CREATE DATABASE bookstore;
+# \c bookstore
 ```
 
-Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión desde la imagen
+Ahora si, ya teemos la base configurada, agreguemos a la imagen [Sagan](https://github.com/ba-st/Sagan)
+
+```smalltalk
+Metacello new
+	baseline: 'Sagan';
+	repository: 'github://ba-st/Sagan:release-candidate/source';
+	load
+```
+
+Una vez finalizado la carga en la imagen estaremos listos para hacer una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
+
 ```smalltalk
 | login accessor session repository |
 
@@ -75,7 +125,7 @@ login := Login new
 		password: 'secret';
 		host: 'localhost';
 		port: 5432;
-		databaseName: 'test';
+		databaseName: 'bookstore';
 		yourself.
 
 accessor := DatabaseAccessor forLogin: login.
@@ -86,35 +136,17 @@ session := GlorpSession new
 		yourself.
 ```
 
-Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
+Algo así
+![Alt Text](login.png)
 
+`session login` nos dará un objeto que nos permite trabajar con la base a la que nos conectamos. 
+
+# Hora de sacar la persistencia terminada del repositorio 
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source';
+	repository: 'github://Smalltalk-AR/Bookstore:master/source';
 	load
 ```
-Ahora si, agreguemos a la imagen [Sagan](http)
-
-```smalltalk
-Metacello new
-	baseline: 'Sagan';
-	repository: 'github://ba-st/Sagan:release-candidate/source';
-	load
-```
-
-Ya tenemos la base de datos y tenemos Sagan en la imagen, hagamos una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
-
-
-
-### Cargar el modelo + persistencia
-```smalltalk
-Metacello new
-	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:persistence/source';
-	load
-```
-
-mostrar que se persiste, no usaria el driver de alvaro.. pongamos postgre 
 
 
