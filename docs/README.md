@@ -145,7 +145,7 @@ Algo así
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore:persistence/source';
+	repository: 'github://Smalltalk-AR/Bookstore:master/source';
 	load
 ```
 
