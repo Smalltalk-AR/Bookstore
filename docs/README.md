@@ -14,7 +14,7 @@ Para empezar vamos a cargar el modelo, para ello deberán ejecutar en el Playgro
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:model/source';
+	repository: 'github://Smalltalk-AR/Bookstore:model/source';
 	load
 ```
 
