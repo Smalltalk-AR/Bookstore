@@ -78,8 +78,16 @@ Metacello new
 
 Y ahora vamos a levantar la app desde la imagen
 
-ZnServer
+```smalltalk
+| server directory delegate |
+directory := FileSystem disk / 'Users' / 'patchinko' / 'Development' / 'com.github'  / 'Smalltalk-AR' / 'Bookstore-Frontend'.
 
+delegate := ZnStaticFileServerDelegate new directory: directory.
+
+server := ZnServer on: 8888.
+server delegate: delegate.
+server start.
+```
 
 # Agregándole persistencia
 
