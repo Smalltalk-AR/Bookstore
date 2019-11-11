@@ -24,23 +24,46 @@ Metacello new
 
 # Creando una API RESTful
 
-Vamos a explorar en un playground (o un test) un poco el micro framework [Teapo](https://github.com/zeroflag/Teapot) con el que vamos a hacer la API.
+Vamos a explorar en un playground (o un test) un poco el micro framework [Teapot](https://github.com/zeroflag/Teapot) con el que vamos a hacer la API.
 
 Para agregar Teapot a la imagen, ejecutar en cualquier lado 
 
 ```smalltalk
 Metacello new
 	baseline: 'Teapot';
-	repository: 'github://zeroflag/Teapot:2.6.0/source';
+	repository: 'github://zeroflag/Teapot:v2.6.0/source';
 	load
 ```
 
 Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. 
 GET /authors
 
+Ejecutando el siguiente script, podemos ver como se crea un server con una sola ruta /authors que nos devuelve una lista con los authores previamente definidos.
 
-
-*Nota:* Aca la idea es agregar hacer algun ejercio listando los libros o las personas.
+```smalltalk
+| authors server author1 author2 |
+	authors := OrderedCollection new.
+	author1 := BookAuthor
+		named: 'Seymour'
+		lastName: 'Skinner'
+		bornIn: 'Springfield'.
+	author2 := BookAuthor
+		named: 'Armando'
+		lastName: 'Barreda'
+		bornIn: 'Springfield'.
+	server := (Teapot configure: {(#defaultOutput -> #json)})
+		GET:
+			'/authors'
+				-> [ :request | 
+					TeaResponse ok
+						body: authors;
+						headers: {('Access-Control-Allow-Origin' -> '*')} ];
+		start.
+	authors
+		add: author1;
+		add: author2.
+	authors
+```
 
 # Agregándole persistencia
 
