@@ -38,7 +38,7 @@ Metacello new
 Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. 
 GET /authors
 
-Ejecutando el siguiente script, podemos ver como se crea un server con una sola ruta /authors que nos devuelve una lista con los authores previamente definidos.
+Ejecutando el siguiente script, podemos ver como se crea un server con una sola ruta /authors que nos devuelve una lista con los autores previamente definidos.
 
 ```smalltalk
 | authors server author1 author2 |
