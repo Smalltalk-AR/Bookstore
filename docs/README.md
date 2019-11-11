@@ -99,7 +99,7 @@ login := Login new
 		password: 'secret';
 		host: 'localhost';
 		port: 5432;
-		databaseName: 'test';
+		databaseName: 'bookstore';
 		yourself.
 
 accessor := DatabaseAccessor forLogin: login.
