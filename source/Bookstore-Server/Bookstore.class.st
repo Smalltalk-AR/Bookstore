@@ -9,14 +9,24 @@ Class {
 	#category : #'Bookstore-Server'
 }
 
+{ #category : #'instance creation' }
+Bookstore class >> storingAuthorsIn: aRepository [
+
+	^ self new initializeRegisteringAuthorsIn: aRepository
+]
+
 { #category : #initialization }
 Bookstore >> addAuthor: author [
-	authors add: author
+
+	authors store: author.
+	^ author
 ]
 
 { #category : #initialization }
 Bookstore >> addAuthorBasedOn: aJSONString [
+
 	| author |
+
 	author := BookAuthor
 		fromJson: (NeoJSONObject fromString: aJSONString).
 	self addAuthor: author.
@@ -32,7 +42,9 @@ Bookstore >> addBook: book [
 
 { #category : #initialization }
 Bookstore >> addBookBasedOn: aJSONString [
+
 	| book |
+
 	book := Book fromJson: (NeoJSONObject fromString: aJSONString).
 	self addBook: book.
 	^ TeaResponse ok
@@ -42,7 +54,8 @@ Bookstore >> addBookBasedOn: aJSONString [
 
 { #category : #initialization }
 Bookstore >> authors [
-	^ authors
+
+	^ authors findAll
 ]
 
 { #category : #initialization }
@@ -52,19 +65,39 @@ Bookstore >> books [
 
 { #category : #initialization }
 Bookstore >> configureEndpointsFor: aServer [
+
 	aServer
 		GET: '/authors' -> [ :request | self getAllAuthors ];
 		POST: '/authors' -> [ :request | self addAuthorBasedOn: request contents ];
-		DELETE: '/authors' -> [ :request | self deleteAuthorBasedOn: request contents ].
+		OPTIONS:
+			'/authors'
+				-> [ :request | 
+					| response |
+
+					response := ZnResponse noContent.
+					response headers at: 'Access-Control-Allow-Methods' put: 'POST'.
+					response headers at: 'Access-Control-Allow-Headers' put: 'Content-Type'.
+					response ];
+		DELETE:
+			'/authors'
+				-> [ :request | self deleteAuthorBasedOn: request contents ].
 	aServer
 		GET: '/books' -> [ :request | self getAllBooks ];
 		POST: '/books' -> [ :request | self addBookBasedOn: request contents ];
-		DELETE: '/books' -> [ :request | self deleteBookBasedOn: request contents ]
+		DELETE: '/books' -> [ :request | self deleteBookBasedOn: request contents ].
+
+	aServer
+		after:
+			'/*'
+				->
+					[ :request :response | response headers at: 'Access-Control-Allow-Origin' put: '*' ]
 ]
 
 { #category : #initialization }
 Bookstore >> deleteAuthorBasedOn: aJSONString [
+
 	| authorToDelete |
+
 	authorToDelete := BookAuthor
 		fromJson: (NeoJSONObject fromString: aJSONString).
 	authors
@@ -92,8 +125,9 @@ Bookstore >> deleteBookBasedOn: aJSONString [
 
 { #category : #initialization }
 Bookstore >> getAllAuthors [
+
 	^ TeaResponse ok
-		body: authors;
+		body: self authors;
 		headers: {('Access-Control-Allow-Origin' -> '*')}
 ]
 
@@ -105,23 +139,34 @@ Bookstore >> getAllBooks [
 ]
 
 { #category : #initialization }
-Bookstore >> initialize [
+Bookstore >> initializeHTTPServer [
+
 	server := Teapot
 		configure:
-			{(#port -> 8080).
+			{(#port -> 1710).
 			(#defaultOutput -> #json).
 			(#debugMode -> true)}.
-	self configureEndpointsFor: server.
-	authors := Set new.
-	books := Set new
+
+	self configureEndpointsFor: server
+]
+
+{ #category : #initialization }
+Bookstore >> initializeRegisteringAuthorsIn: aRepository [
+
+	authors := aRepository.
+	books := Set new.
+
+	self initializeHTTPServer
 ]
 
 { #category : #initialization }
 Bookstore >> start [
+
 	server start
 ]
 
 { #category : #initialization }
 Bookstore >> stop [
+
 	server stop
 ]

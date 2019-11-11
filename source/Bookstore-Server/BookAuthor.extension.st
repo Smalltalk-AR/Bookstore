@@ -5,7 +5,7 @@ BookAuthor class >> fromJson: aNeoJSon [
 	^ self
 		named: (aNeoJSon at: #firstName)
 		lastName: (aNeoJSon at: #lastName)
-		bornIn: (aNeoJSon at: #nationality)
+		bornIn: (aNeoJSon at: #country)
 ]
 
 { #category : #'*Bookstore-Server' }
