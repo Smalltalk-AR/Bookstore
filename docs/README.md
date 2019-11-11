@@ -35,8 +35,7 @@ Metacello new
 	load
 ```
 
-Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. 
-GET /authors
+Ahora vamos a hacer rápido un servicio que nos devuelva todos los autores. Un `GET /authors`.
 
 Ejecutando el siguiente script, podemos ver como se crea un server con una sola ruta /authors que nos devuelve una lista con los autores previamente definidos.
 
@@ -65,6 +64,23 @@ Ejecutando el siguiente script, podemos ver como se crea un server con una sola 
 	authors
 ```
 
+¿Se te ocurren más pruebas? ¿Cómo crearías un nuevo recurso?
+
+# ¿Y la aplicación web?
+
+Carguemos el back end...
+```smalltalk
+Metacello new
+	baseline: 'Bookstore';
+	repository: 'github://Smalltalk-AR/Bookstore:api/source';
+	load
+```
+
+Y ahora vamos a levantar la app desde la imagen
+
+ZnServer
+
+
 # Agregándole persistencia
 
 Es hora de agregar persistencia al ejercicio. 
@@ -85,16 +101,9 @@ $ docker exec -it db-tests bash
 $ psql -U postgres
 # CREATE DATABASE bookstore;
 # \c bookstore
-```
-Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
+```\
 
-```smalltalk
-Metacello new
-	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore:api/source';
-	load
-```
-Ahora si, agreguemos a la imagen [Sagan](http)
+Ahora si, ya teemos la base configurada, agreguemos a la imagen [Sagan](https://github.com/ba-st/Sagan)
 
 ```smalltalk
 Metacello new
@@ -103,9 +112,8 @@ Metacello new
 	load
 ```
 
-Ya tenemos la base de datos y tenemos Sagan en la imagen, hagamos una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
+Una vez finalizado la carga en la imagen estaremos listos para hacer una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
 
-Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión desde la imagen
 ```smalltalk
 | login accessor session repository |
 
@@ -128,8 +136,12 @@ session := GlorpSession new
 		yourself.
 ```
 
+Algo así
+![Alt Text](login.png)
 
-### Cargar el modelo + persistencia
+`session login` nos dará un objeto que nos permite trabajar con la base a la que nos conectamos. 
+
+# Hora de sacar la persistencia terminada del repositorio 
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
