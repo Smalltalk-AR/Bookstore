@@ -60,7 +60,8 @@ Vamos a crear la base
 $ docker exec -it db-tests bash
 
 $ psql -U postgres
-$ CREATE DATABASE bookstore;
+# CREATE DATABASE bookstore;
+# \c bookstore
 ```
 
 Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión desde la imagen
