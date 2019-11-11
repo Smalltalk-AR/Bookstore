@@ -86,6 +86,24 @@ $ psql -U postgres
 # CREATE DATABASE bookstore;
 # \c bookstore
 ```
+Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
+
+```smalltalk
+Metacello new
+	baseline: 'Bookstore';
+	repository: 'github://Smalltalk-AR/Bookstore:api/source';
+	load
+```
+Ahora si, agreguemos a la imagen [Sagan](http)
+
+```smalltalk
+Metacello new
+	baseline: 'Sagan';
+	repository: 'github://ba-st/Sagan:release-candidate/source';
+	load
+```
+
+Ya tenemos la base de datos y tenemos Sagan en la imagen, hagamos una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
 
 Vamos a probar que todo está en orden, para ello vamos a intentar establecer una conexión desde la imagen
 ```smalltalk
@@ -110,35 +128,13 @@ session := GlorpSession new
 		yourself.
 ```
 
-Ahora Antes vamos a explorar algunos conceptos en un Playground. Para eso vamos a cargar primero 
-
-```smalltalk
-Metacello new
-	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:api/source';
-	load
-```
-Ahora si, agreguemos a la imagen [Sagan](http)
-
-```smalltalk
-Metacello new
-	baseline: 'Sagan';
-	repository: 'github://ba-st/Sagan:release-candidate/source';
-	load
-```
-
-Ya tenemos la base de datos y tenemos Sagan en la imagen, hagamos una pequeña prueba de conectividad. Copia y peqa el siguiente código e inspeccionalo para obtener una sesión a la base de datos.
-
-
 
 ### Cargar el modelo + persistencia
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
-	repository: 'github://Smalltalk-AR/Bookstore-Backend:persistence/source';
+	repository: 'github://Smalltalk-AR/Bookstore:persistence/source';
 	load
 ```
-
-mostrar que se persiste, no usaria el driver de alvaro.. pongamos postgre 
 
 
