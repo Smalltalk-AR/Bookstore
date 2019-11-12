@@ -39,7 +39,7 @@ BaselineOfBookstore >> setUpGroups: spec [
 	spec
 		package: 'Bookstore-Model' with: [ spec requires: #('Buoy') ];
 		package: 'Bookstore-Server'
-			with: [ spec requires: #('Bookstore-Model' 'Teapot') ];
+			with: [ spec requires: #('Bookstore-Model' 'Teapot' 'Sagan') ];
 		package: 'Bookstore-Tests'
 			with: [ spec
 				requires: #('Bookstore-Model' 'Bookstore-Server' 'BuoyTestExtensions') ].
