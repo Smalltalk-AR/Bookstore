@@ -93,7 +93,7 @@ Listo, ahora en la imagen, en un Playground, copia el siguiente texto reemplazan
 | server directory delegate |
 
 directory := FileSystem disk / 'Users/...'.
-delegate := ZnStaticFileServerDelegate new directory: (FileSystem disk / directory).
+delegate := ZnStaticFileServerDelegate new directory: directory.
 
 server := ZnServer on: 8888.
 server delegate: delegate.
