@@ -9,6 +9,7 @@ Class {
 	#category : #'Bookstore-Server'
 }
 
+
 { #category : #'instance creation' }
 Bookstore class >> storingAuthorsIn: aRepository [
 
@@ -22,44 +23,45 @@ Bookstore >> addAuthor: author [
 	^ author
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> addAuthorBasedOn: aJSONString [
 
 	| author |
 
-	author := BookAuthor
-		fromJson: (NeoJSONObject fromString: aJSONString).
+	author := BookAuthor fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	self addAuthor: author.
-	^ TeaResponse ok
-		body: author;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+	
+	^ TeaResponse ok body: author
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> addBook: book [
+
 	books add: book
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> addBookBasedOn: aJSONString [
 
 	| book |
 
-	book := Book fromJson: (NeoJSONObject fromString: aJSONString).
+	book := Book fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	self addBook: book.
-	^ TeaResponse ok
-		body: book;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+	
+	^ TeaResponse ok body: book
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> authors [
 
 	^ authors findAll
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> books [
+
 	^ books
 ]
 
@@ -69,76 +71,64 @@ Bookstore >> configureEndpointsFor: aServer [
 	aServer
 		GET: '/authors' -> [ :request | self getAllAuthors ];
 		POST: '/authors' -> [ :request | self addAuthorBasedOn: request contents ];
-		OPTIONS:
-			'/authors'
-				-> [ :request | 
-					| response |
+		DELETE: '/authors' -> [ :request | self deleteAuthorBasedOn: request contents ];
+		OPTIONS: '/authors' -> self preflightResponse.
 
-					response := ZnResponse noContent.
-					response headers at: 'Access-Control-Allow-Methods' put: 'POST'.
-					response headers at: 'Access-Control-Allow-Headers' put: 'Content-Type'.
-					response ];
-		DELETE:
-			'/authors'
-				-> [ :request | self deleteAuthorBasedOn: request contents ].
 	aServer
 		GET: '/books' -> [ :request | self getAllBooks ];
 		POST: '/books' -> [ :request | self addBookBasedOn: request contents ];
-		DELETE: '/books' -> [ :request | self deleteBookBasedOn: request contents ].
+		DELETE: '/books' -> [ :request | self deleteBookBasedOn: request contents ];
+		OPTIONS: '/books' -> self preflightResponse.
 
 	aServer
-		after:
-			'/*'
-				->
-					[ :request :response | response headers at: 'Access-Control-Allow-Origin' put: '*' ]
+		after: '/*' -> [ :request :response | response headers at: 'Access-Control-Allow-Origin' put: '*' ]
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> deleteAuthorBasedOn: aJSONString [
 
 	| authorToDelete |
 
-	authorToDelete := BookAuthor
-		fromJson: (NeoJSONObject fromString: aJSONString).
+	authorToDelete := BookAuthor fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	authors
 		detect: [ :author | author = authorToDelete ]
 		ifFound: [ :author | authors remove: author ]
 		ifNone: [ "do nothing" ].
-	^ TeaResponse ok
-		body: authorToDelete;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+		
+	^ TeaResponse ok body: authorToDelete
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> deleteBookBasedOn: aJSONString [
+
 	| bookToDelete |
-	bookToDelete := Book
-		fromJson: (NeoJSONObject fromString: aJSONString).
+
+	bookToDelete := Book fromJson: ( NeoJSONObject fromString: aJSONString ).
 	books
 		detect: [ :book | book = bookToDelete ]
 		ifFound: [ :book | books remove: book ]
 		ifNone: [ "do nothing" ].
+		
 	^ TeaResponse ok
-		body: bookToDelete;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+		body: bookToDelete.
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> getAllAuthors [
 
 	^ TeaResponse ok
-		body: self authors;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+		body: self authors
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> getAllBooks [
-	^ TeaResponse ok
-		body: books;
-		headers: {('Access-Control-Allow-Origin' -> '*')}
+
+	^ TeaResponse ok body: books
 ]
 
 { #category : #initialization }
+
 Bookstore >> initializeHTTPServer [
 
 	server := Teapot
@@ -159,13 +149,26 @@ Bookstore >> initializeRegisteringAuthorsIn: aRepository [
 	self initializeHTTPServer
 ]
 
-{ #category : #initialization }
+{ #category : #CORS }
+Bookstore >> preflightResponse [
+
+	^ [ :request | 
+	| response |
+
+	response := ZnResponse noContent.
+	response headers at: 'Access-Control-Allow-Methods' put: 'POST DELETE'.
+	response headers at: 'Access-Control-Allow-Headers' put: 'Content-Type'.
+	response
+	]
+]
+
+{ #category : #controling }
 Bookstore >> start [
 
 	server start
 ]
 
-{ #category : #initialization }
+{ #category : #controling }
 Bookstore >> stop [
 
 	server stop
