@@ -9,14 +9,13 @@ Class {
 	#category : #'Bookstore-Server'
 }
 
-
 { #category : #'instance creation' }
 Bookstore class >> storingAuthorsIn: aRepository [
 
 	^ self new initializeRegisteringAuthorsIn: aRepository
 ]
 
-{ #category : #initialization }
+{ #category : #API }
 Bookstore >> addAuthor: author [
 
 	authors store: author.
@@ -128,7 +127,6 @@ Bookstore >> getAllBooks [
 ]
 
 { #category : #initialization }
-
 Bookstore >> initializeHTTPServer [
 
 	server := Teapot
