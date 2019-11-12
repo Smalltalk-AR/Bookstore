@@ -9,10 +9,18 @@ Class {
 	#category : #'Bookstore-Server'
 }
 
-{ #category : #API }
+
+{ #category : #'instance creation' }
+Bookstore class >> storingAuthorsIn: aRepository [
+
+	^ self new initializeRegisteringAuthorsIn: aRepository
+]
+
+{ #category : #initialization }
 Bookstore >> addAuthor: author [
 
-	authors add: author
+	authors store: author.
+	^ author
 ]
 
 { #category : #API }
@@ -21,6 +29,7 @@ Bookstore >> addAuthorBasedOn: aJSONString [
 	| author |
 
 	author := BookAuthor fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	self addAuthor: author.
 	
 	^ TeaResponse ok body: author
@@ -38,6 +47,7 @@ Bookstore >> addBookBasedOn: aJSONString [
 	| book |
 
 	book := Book fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	self addBook: book.
 	
 	^ TeaResponse ok body: book
@@ -46,7 +56,7 @@ Bookstore >> addBookBasedOn: aJSONString [
 { #category : #API }
 Bookstore >> authors [
 
-	^ authors
+	^ authors findAll
 ]
 
 { #category : #API }
@@ -80,6 +90,7 @@ Bookstore >> deleteAuthorBasedOn: aJSONString [
 	| authorToDelete |
 
 	authorToDelete := BookAuthor fromJson: ( NeoJSONObject fromString: aJSONString ).
+
 	authors
 		detect: [ :author | author = authorToDelete ]
 		ifFound: [ :author | authors remove: author ]
@@ -107,7 +118,7 @@ Bookstore >> deleteBookBasedOn: aJSONString [
 Bookstore >> getAllAuthors [
 
 	^ TeaResponse ok
-		body: authors
+		body: self authors
 ]
 
 { #category : #API }
@@ -117,16 +128,25 @@ Bookstore >> getAllBooks [
 ]
 
 { #category : #initialization }
-Bookstore >> initialize [
+
+Bookstore >> initializeHTTPServer [
 
 	server := Teapot
 		configure:
-			{( #port -> 1710 ).
-			( #defaultOutput -> #json ).
-			( #debugMode -> true )}.
-	self configureEndpointsFor: server.
-	authors := Set new.
-	books := Set new
+			{(#port -> 1710).
+			(#defaultOutput -> #json).
+			(#debugMode -> true)}.
+
+	self configureEndpointsFor: server
+]
+
+{ #category : #initialization }
+Bookstore >> initializeRegisteringAuthorsIn: aRepository [
+
+	authors := aRepository.
+	books := Set new.
+
+	self initializeHTTPServer
 ]
 
 { #category : #CORS }
