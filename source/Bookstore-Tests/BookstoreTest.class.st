@@ -31,13 +31,13 @@ BookstoreTest >> testAccessingFromNewBookstore [
 { #category : #running }
 BookstoreTest >> testAddAuthorFromJSONToBookstore [
 	| json |
-	json := '{"firstName":"Example", "lastName":"Name", "nationality":"Malasya"}'.
+	json := '{"firstName":"Example", "lastName":"Name", "country":"Malasya"}'.
 	self assert: bookstore authors isEmpty.
 	bookstore addAuthorBasedOn: json.
 	self
 		withTheOnlyOneIn: bookstore authors
 		do: [ :author | 
-			('{"firstName":"<1s>", "lastName":"<2s>", "nationality":"<3s>"}'
+			('{"firstName":"<1s>", "lastName":"<2s>", "country":"<3s>"}'
 				expandMacrosWith: author firstName
 				with: author lastName
 				with: author country) = json ].
