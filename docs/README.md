@@ -20,7 +20,6 @@ Metacello new
 
 ![Alt Text](load-model.png)
 
-*Nota:* aca la idea es explorar un poco el ambiente y la solución. Tambien ver un baseline.*
 
 # Creando una API RESTful
 
@@ -76,25 +75,40 @@ Metacello new
 	load
 ```
 
-Y ahora vamos a levantar la app desde la imagen
+Y ahora vamos a servir el frontend desde la imagen, primero lo vamos a clonar desde github. Ejecuta el siguiente código en una consola
+
+```bash
+$ git clone git@github.com:Smalltalk-AR/Bookstore-Frontend.git
+```
+Esto debería haber creado un sub-directorio `Bookstore-Frontend` en el directorio en el que estabas, entra y copia la ruta así
+
+```shell
+$ cd Bookstore-Frontend
+$ pwd | pbcopy
+```
+
+Listo, ahora en la imagen, en un Playground, copia el siguiente texto reemplazando `'/Users/...'` por el directorio en el cual está el sitio.
 
 ```smalltalk
 | server directory delegate |
-directory := FileSystem disk / 'Users' / 'patchinko' / 'Development' / 'com.github'  / 'Smalltalk-AR' / 'Bookstore-Frontend'.
 
-delegate := ZnStaticFileServerDelegate new directory: directory.
+directory := FileSystem disk / 'Users/...'.
+delegate := ZnStaticFileServerDelegate new directory: (FileSystem disk / directory).
 
 server := ZnServer on: 8888.
 server delegate: delegate.
 server start.
 ```
 
+Ok, ahora abrí un navegador y andá a la url `http://localhost:8888/` para ver el sitio.
+
 # Agregándole persistencia
 
-Es hora de agregar persistencia al ejercicio. 
+Para el ejercicio vamos a detallar como utilizar una base de *Postgres SQL* pero hay soporte para varios otros motores de bases de datos relacionales. También los hay bases NoSQL, como MongoDB o Redis.
 
+## Instalando la base de datos
 
-## Instalando postgres
+Para facilitar su instalación vamos a usar [Docker](https://docs.docker.com/get-started/) para la base de datos.
 
 ```bash
 $ docker pull postgres:11
@@ -150,11 +164,12 @@ Algo así
 `session login` nos dará un objeto que nos permite trabajar con la base a la que nos conectamos. 
 
 # Hora de sacar la persistencia terminada del repositorio 
+
 ```smalltalk
 Metacello new
 	baseline: 'Bookstore';
 	repository: 'github://Smalltalk-AR/Bookstore:master/source';
 	load
 ```
-
+ Esto cargará el proyecto terminado, ¿se animan a hacer los cambios que faltan para persitir los libros?
 
